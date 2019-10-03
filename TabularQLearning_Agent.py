@@ -4,8 +4,10 @@ import copy
 
 class Agent:
 
-    def __init__(self, name, q_table, lr_start=0.1, lr_end=0.01, lr_decay=0.9999, reward_discount=0.9, eps_start=1.0,
-                 eps_end=0.01, eps_decay=0.95):
+    def __init__(self, name, q_table, lr_start=0.1, lr_end=0.01, lr_decay=0.9999, reward_discount=0.9, eps_start=0.0,
+                 eps_end=0.0, eps_decay=0.95):
+        # alpha decay hat keinen aunfluss
+        # epsilon decay braucht es nur länger
 
         self.name = name
 

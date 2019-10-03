@@ -2,9 +2,9 @@ import copy
 import random
 
 
-class Play:
+class TicTacToe:
 
-    def __init__(self, player1, player2, number_of_episodes, train, win_reward=1.0, lose_reward=-1.0, draw_reward=0.5):
+    def __init__(self, player1, player2, win_reward=1.0, lose_reward=0.0, draw_reward=0.5):
 
         self.player_1 = player1
         self.player_2 = player2
@@ -29,15 +29,11 @@ class Play:
         self.reward_opponent = None
 
         self.game_playing = True
-        self.episodes = number_of_episodes
-        self.training = train
 
         self.result = None
         self.statistics = None
         self.statistics_total = {self.name_player_1: 0, self.name_player_2: 0, "Draw": 0}
         self.statistic_empty = {self.name_player_1: 0, self.name_player_2: 0, "Draw": 0}
-
-        self.play_tic_tac_toe()
 
     def set_up_game(self):
 
@@ -102,7 +98,7 @@ class Play:
                 self.game_playing = False
 
                 self.result = self.player_x_turn
-                #print(self.result)
+                #print("Win:", self.player_x_turn.name)
 
                 return
 
@@ -148,17 +144,18 @@ class Play:
                 board_state[j] = 1
         return board_state
 
-    def play_tic_tac_toe(self):
+    def Play(self, episodes, training):
 
         self.statistics = copy.deepcopy(self.statistic_empty)
 
-        for episode in range(self.episodes):
+        for episode in range(episodes):
 
             self.set_up_game()
 
             while self.game_playing:
-                self.move = self.player_x_turn.make_move(self.board, episode, self.training)
+                self.move = self.player_x_turn.make_move(self.board, episode, training)
                 #print(self.prepare_board(self.board))
+                #print(self.move, self.player_x_turn.name)
                 self.update_board()
 
                 self.player_x_turn.buffer_experience(self.board, self.move, self.reward, self.board_next, True)
@@ -167,7 +164,7 @@ class Play:
                 self.end_of_turn()
 
             self.update_statistics(episode)
-            if self.training:
+            if training:
                 self.player_1.evolve()
                 self.player_2.evolve()
 

@@ -1,18 +1,17 @@
-import TicTacToe, Random_Agent, TabularQLearning_Agent, QTable, Human_Agent
+import TicTacToe, Random_Agent, TabularQLearning_Agent, QTable, Human_Agent, Perfect_Agent
 
-QTable = QTable.QTable(initialize=True)
+QTable = QTable.QTable(initialize=True, content=0.6)
 
 Player1 = TabularQLearning_Agent.Agent("Tabular-Q-Learning-Agent 1", QTable)
 Player2 = TabularQLearning_Agent.Agent("Tabular-Q-Learning-Agent 2", QTable)
 Player3 = Random_Agent.RandomPlayerTicTacToe("Random")
 Player4 = Human_Agent.HumanPlayerTicTacToe("Human", "X")
+Player5 = Perfect_Agent.PerfectAgent("Perfect")
 
-#Humann = TicTacToe.Play(Player1, Player4, number_of_episodes=100, train=True)
+TicTacToe_Q_vs_Q = TicTacToe.TicTacToe(Player1, Player2)
+TicTacToe_Q_vs_P = TicTacToe.TicTacToe(Player1, Player5)
 
-Test1 = TicTacToe.Play(Player1, Player3, number_of_episodes=10000, train=False)
-Training = TicTacToe.Play(Player1, Player3, number_of_episodes=100000, train=True)
-Test2 = TicTacToe.Play(Player1, Player3, number_of_episodes=10000, train=False)
+TicTacToe_Q_vs_Q.Play(episodes=100000, training=True)
+TicTacToe_Q_vs_P.Play(episodes=10000, training=False)
 
 QTable.save_table()
-
-#Test3 = TicTacToe.Play(Player1, Player3, number_of_episodes=10000, train=True)

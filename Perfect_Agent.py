@@ -36,88 +36,267 @@ class PerfectAgent:
             for d, e, f in win_combinations:
                 if a == (d or e or f) or b == (d or e or f) or c == (d or e or f):
                     if board[2][a] == board[2][b] == 0.99 and board[0][c] == 0.99:
-                        if a == (d or e or f):
-                            return a
-                        elif b == (d or e or f):
-                            return b
+                        if board[2][d] == board[2][e] == 0.99 and board[0][f] == 0.99:
+                            if c != f:
+                                if a == (d or e):
+                                    return a
+                                elif b == (d or e):
+                                    return b
+                        elif board[2][d] == board[2][f] == 0.99 and board[0][e] == 0.99:
+                            if c != e:
+                                if a == (d or f):
+                                    return a
+                                elif b == (d or f):
+                                    return b
+                        elif board[2][e] == board[2][f] == 0.99 and board[0][d] == 0.99:
+                            if c != d:
+                                if a == (e or f):
+                                    return a
+                                elif b == (e or f):
+                                    return b
                     elif board[2][a] == board[2][c] == 0.99 and board[0][b] == 0.99:
-                        if a == (d or e or f):
-                            return a
-                        elif c == (d or e or f):
-                            return c
+                        if board[2][d] == board[2][e] == 0.99 and board[0][f] == 0.99:
+                            if b != f:
+                                if a == (d or e):
+                                    return a
+                                elif c == (d or e):
+                                    return c
+                        elif board[2][d] == board[2][f] == 0.99 and board[0][e] == 0.99:
+                            if b != e:
+                                if a == (d or f):
+                                    return a
+                                elif c == (d or f):
+                                    return c
+                        elif board[2][e] == board[2][f] == 0.99 and board[0][d] == 0.99:
+                            if b != d:
+                                if a == (e or f):
+                                    return a
+                                elif c == (e or f):
+                                    return c
                     elif board[2][b] == board[2][c] == 0.99 and board[0][a] == 0.99:
-                        if b == (d or e or f):
-                            return b
-                        elif c == (d or e or f):
-                            return c
+                        if board[2][d] == board[2][e] == 0.99 and board[0][f] == 0.99:
+                            if a != f:
+                                if b == (d or e):
+                                    return b
+                                elif c == (d or e):
+                                    return c
+                        elif board[2][d] == board[2][f] == 0.99 and board[0][e] == 0.99:
+                            if a != e:
+                                if b == (d or f):
+                                    return b
+                                elif c == (d or f):
+                                    return c
+                        elif board[2][e] == board[2][f] == 0.99 and board[0][d] == 0.99:
+                            if a != d:
+                                if b == (e or f):
+                                    return b
+                                elif c == (e or f):
+                                    return c
 
         # 4. Block Fork
         for a, b, c in win_combinations:
             for d, e, f in win_combinations:
-                if a == (d or e or f) or b == (d or e or f) or c == (d or e or f):
-                    if board[2][a] == board[2][b] == 0.99 and board[1][c] == 0.99:
-                        if a == (d or e or f):
-                            for g, h, i in win_combinations:
-                                if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                    if g == a:
-                                        return g
-                                    elif h == a:
-                                        return h
-                                    else:
-                                        return g
-                            return a
-                        elif b == (d or e or f):
-                            for g, h, i in win_combinations:
-                                if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                    if g == b:
-                                        return g
-                                    elif h == b:
-                                        return h
-                                    else:
-                                        return g
-                            return b
-                    elif board[2][a] == board[2][c] == 0.99 and board[1][b] == 0.99:
-                        if a == (d or e or f):
-                            for g, h, i in win_combinations:
-                                if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                    if g == a:
-                                        return g
-                                    elif h == a:
-                                        return h
-                                    else:
-                                        return g
-                            return a
-                        elif c == (d or e or f):
-                            for g, h, i in win_combinations:
-                                if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                    if g == c:
-                                        return g
-                                    elif h == c:
-                                        return h
-                                    else:
-                                        return g
-                            return c
-                    elif board[2][b] == board[2][c] == 0.99 and board[1][a] == 0.99:
-                        if b == (d or e or f):
-                            for g, h, i in win_combinations:
-                                if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                    if g == b:
-                                        return g
-                                    elif h == b:
-                                        return h
-                                    else:
-                                        return g
-                            return b
-                        elif c == (d or e or f):
-                            for g, h, i in win_combinations:
-                                if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                    if g == c:
-                                        return g
-                                    elif h == c:
-                                        return h
-                                    else:
-                                        return g
-                            return c
+                if board[2][a] == board[2][b] == 0.99 and board[1][c] == 0.99:
+                    if board[2][d] == board[2][e] == 0.99 and board[1][f] == 0.99:
+                        if c != f:
+                            if a == (d or e):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == a:
+                                            return g
+                                        elif h == a:
+                                            return h
+                                        else:
+                                            return g
+                                return a
+                            elif b == (d or e):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == b:
+                                            return g
+                                        elif h == b:
+                                            return h
+                                        else:
+                                            return g
+                                return b
+                    elif board[2][d] == board[2][f] == 0.99 and board[1][e] == 0.99:
+                        if c != e:
+                            if a == (d or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == a:
+                                            return g
+                                        elif h == a:
+                                            return h
+                                        else:
+                                            return g
+                                return a
+                            elif b == (d or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == b:
+                                            return g
+                                        elif h == b:
+                                            return h
+                                        else:
+                                            return g
+                                return b
+                    elif board[2][e] == board[2][f] == 0.99 and board[1][d] == 0.99:
+                        if c != d:
+                            if a == (e or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == a:
+                                            return g
+                                        elif h == a:
+                                            return h
+                                        else:
+                                            return g
+                                return a
+                            elif b == (e or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == b:
+                                            return g
+                                        elif h == b:
+                                            return h
+                                        else:
+                                            return g
+                                return b
+                elif board[2][a] == board[2][c] == 0.99 and board[1][b] == 0.99:
+                    if board[2][d] == board[2][e] == 0.99 and board[1][f] == 0.99:
+                        if b != f:
+                            if a == (d or e):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == a:
+                                            return g
+                                        elif h == a:
+                                            return h
+                                        else:
+                                            return g
+                                return a
+                            elif c == (d or e):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == c:
+                                            return g
+                                        elif h == c:
+                                            return h
+                                        else:
+                                            return g
+                                return c
+                    elif board[2][d] == board[2][f] == 0.99 and board[1][e] == 0.99:
+                        if b != e:
+                            if a == (d or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == a:
+                                            return g
+                                        elif h == a:
+                                            return h
+                                        else:
+                                            return g
+                                return a
+                            elif c == (d or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == c:
+                                            return g
+                                        elif h == c:
+                                            return h
+                                        else:
+                                            return g
+                                return c
+                    elif board[2][e] == board[2][f] == 0.99 and board[1][d] == 0.99:
+                        if b != d:
+                            if a == (e or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == a:
+                                            return g
+                                        elif h == a:
+                                            return h
+                                        else:
+                                            return g
+                                return a
+                            elif c == (e or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == c:
+                                            return g
+                                        elif h == c:
+                                            return h
+                                        else:
+                                            return g
+                                return c
+                elif board[2][b] == board[2][c] == 0.99 and board[1][a] == 0.99:
+                    if board[2][d] == board[2][e] == 0.99 and board[1][f] == 0.99:
+                        if a != f:
+                            if b == (d or e):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == b:
+                                            return g
+                                        elif h == b:
+                                            return h
+                                        else:
+                                            return g
+                                return b
+                            elif c == (d or e):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == c:
+                                            return g
+                                        elif h == c:
+                                            return h
+                                        else:
+                                            return g
+                                return c
+                    if board[2][d] == board[2][f] == 0.99 and board[1][e] == 0.99:
+                        if a != e:
+                            if b == (d or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == b:
+                                            return g
+                                        elif h == b:
+                                            return h
+                                        else:
+                                            return g
+                                return b
+                            elif c == (d or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == c:
+                                            return g
+                                        elif h == c:
+                                            return h
+                                        else:
+                                            return g
+                                return c
+                    if board[2][e] == board[2][f] == 0.99 and board[1][d] == 0.99:
+                        if a != d:
+                            if b == (e or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == b:
+                                            return g
+                                        elif h == b:
+                                            return h
+                                        else:
+                                            return g
+                                return b
+                            elif c == (e or f):
+                                for g, h, i in win_combinations:
+                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
+                                        if g == c:
+                                            return g
+                                        elif h == c:
+                                            return h
+                                        else:
+                                            return g
+                                return c
 
         # 5. Play Center
         if board[2][4] == 0.99:

@@ -1,4 +1,5 @@
 # Newell and Simon's 1972
+import copy
 
 
 class PerfectAgent:
@@ -9,17 +10,16 @@ class PerfectAgent:
 
         pass
 
-    @staticmethod
-    def make_move(board, episode, training):
+    def make_move(self, board, episode, training):
         win_combinations = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
 
         # 1. Win
         for a, b, c in win_combinations:
-            if board[0][a] == board[0][b] == 0.99 and board[2][c] == 0.99:
+            if board[0][a] == board[0][b] == board[2][c] == 0.99:
                 return c
-            elif board[0][a] == board[0][c] == 0.99 and board[2][b] == 0.99:
+            elif board[0][a] == board[0][c] == board[2][b] == 0.99:
                 return b
-            elif board[0][b] == board[0][c] == 0.99 and board[2][a] == 0.99:
+            elif board[0][b] == board[0][c] == board[2][a] == 0.99:
                 return a
 
         # 2. Block
@@ -35,58 +35,58 @@ class PerfectAgent:
         for a, b, c in win_combinations:
             for d, e, f in win_combinations:
                 if a == (d or e or f) or b == (d or e or f) or c == (d or e or f):
-                    if board[2][a] == board[2][b] == 0.99 and board[0][c] == 0.99:
-                        if board[2][d] == board[2][e] == 0.99 and board[0][f] == 0.99:
+                    if board[2][a] == board[2][b] == board[0][c] == 0.99:
+                        if board[2][d] == board[2][e] == board[0][f] == 0.99:
                             if c != f:
                                 if a == (d or e):
                                     return a
                                 elif b == (d or e):
                                     return b
-                        elif board[2][d] == board[2][f] == 0.99 and board[0][e] == 0.99:
+                        elif board[2][d] == board[2][f] == board[0][e] == 0.99:
                             if c != e:
                                 if a == (d or f):
                                     return a
                                 elif b == (d or f):
                                     return b
-                        elif board[2][e] == board[2][f] == 0.99 and board[0][d] == 0.99:
+                        elif board[2][e] == board[2][f] == board[0][d] == 0.99:
                             if c != d:
                                 if a == (e or f):
                                     return a
                                 elif b == (e or f):
                                     return b
-                    elif board[2][a] == board[2][c] == 0.99 and board[0][b] == 0.99:
-                        if board[2][d] == board[2][e] == 0.99 and board[0][f] == 0.99:
+                    elif board[2][a] == board[2][c] == board[0][b] == 0.99:
+                        if board[2][d] == board[2][e] == board[0][f] == 0.99:
                             if b != f:
                                 if a == (d or e):
                                     return a
                                 elif c == (d or e):
                                     return c
-                        elif board[2][d] == board[2][f] == 0.99 and board[0][e] == 0.99:
+                        elif board[2][d] == board[2][f] == board[0][e] == 0.99:
                             if b != e:
                                 if a == (d or f):
                                     return a
                                 elif c == (d or f):
                                     return c
-                        elif board[2][e] == board[2][f] == 0.99 and board[0][d] == 0.99:
+                        elif board[2][e] == board[2][f] == board[0][d] == 0.99:
                             if b != d:
                                 if a == (e or f):
                                     return a
                                 elif c == (e or f):
                                     return c
-                    elif board[2][b] == board[2][c] == 0.99 and board[0][a] == 0.99:
-                        if board[2][d] == board[2][e] == 0.99 and board[0][f] == 0.99:
+                    elif board[2][b] == board[2][c] == board[0][a] == 0.99:
+                        if board[2][d] == board[2][e] == board[0][f] == 0.99:
                             if a != f:
                                 if b == (d or e):
                                     return b
                                 elif c == (d or e):
                                     return c
-                        elif board[2][d] == board[2][f] == 0.99 and board[0][e] == 0.99:
+                        elif board[2][d] == board[2][f] == board[0][e] == 0.99:
                             if a != e:
                                 if b == (d or f):
                                     return b
                                 elif c == (d or f):
                                     return c
-                        elif board[2][e] == board[2][f] == 0.99 and board[0][d] == 0.99:
+                        elif board[2][e] == board[2][f] == board[0][d] == 0.99:
                             if a != d:
                                 if b == (e or f):
                                     return b
@@ -96,207 +96,342 @@ class PerfectAgent:
         # 4. Block Fork
         for a, b, c in win_combinations:
             for d, e, f in win_combinations:
-                if board[2][a] == board[2][b] == 0.99 and board[1][c] == 0.99:
-                    if board[2][d] == board[2][e] == 0.99 and board[1][f] == 0.99:
-                        if c != f:
-                            if a == (d or e):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == a:
-                                            return g
-                                        elif h == a:
-                                            return h
-                                        else:
-                                            return g
-                                return a
-                            elif b == (d or e):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == b:
-                                            return g
-                                        elif h == b:
-                                            return h
-                                        else:
-                                            return g
-                                return b
-                    elif board[2][d] == board[2][f] == 0.99 and board[1][e] == 0.99:
-                        if c != e:
-                            if a == (d or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == a:
-                                            return g
-                                        elif h == a:
-                                            return h
-                                        else:
-                                            return g
-                                return a
-                            elif b == (d or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == b:
-                                            return g
-                                        elif h == b:
-                                            return h
-                                        else:
-                                            return g
-                                return b
-                    elif board[2][e] == board[2][f] == 0.99 and board[1][d] == 0.99:
-                        if c != d:
-                            if a == (e or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == a:
-                                            return g
-                                        elif h == a:
-                                            return h
-                                        else:
-                                            return g
-                                return a
-                            elif b == (e or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == b:
-                                            return g
-                                        elif h == b:
-                                            return h
-                                        else:
-                                            return g
-                                return b
-                elif board[2][a] == board[2][c] == 0.99 and board[1][b] == 0.99:
-                    if board[2][d] == board[2][e] == 0.99 and board[1][f] == 0.99:
-                        if b != f:
-                            if a == (d or e):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == a:
-                                            return g
-                                        elif h == a:
-                                            return h
-                                        else:
-                                            return g
-                                return a
-                            elif c == (d or e):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == c:
-                                            return g
-                                        elif h == c:
-                                            return h
-                                        else:
-                                            return g
-                                return c
-                    elif board[2][d] == board[2][f] == 0.99 and board[1][e] == 0.99:
-                        if b != e:
-                            if a == (d or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == a:
-                                            return g
-                                        elif h == a:
-                                            return h
-                                        else:
-                                            return g
-                                return a
-                            elif c == (d or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == c:
-                                            return g
-                                        elif h == c:
-                                            return h
-                                        else:
-                                            return g
-                                return c
-                    elif board[2][e] == board[2][f] == 0.99 and board[1][d] == 0.99:
-                        if b != d:
-                            if a == (e or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == a:
-                                            return g
-                                        elif h == a:
-                                            return h
-                                        else:
-                                            return g
-                                return a
-                            elif c == (e or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == c:
-                                            return g
-                                        elif h == c:
-                                            return h
-                                        else:
-                                            return g
-                                return c
-                elif board[2][b] == board[2][c] == 0.99 and board[1][a] == 0.99:
-                    if board[2][d] == board[2][e] == 0.99 and board[1][f] == 0.99:
-                        if a != f:
-                            if b == (d or e):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == b:
-                                            return g
-                                        elif h == b:
-                                            return h
-                                        else:
-                                            return g
-                                return b
-                            elif c == (d or e):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == c:
-                                            return g
-                                        elif h == c:
-                                            return h
-                                        else:
-                                            return g
-                                return c
-                    if board[2][d] == board[2][f] == 0.99 and board[1][e] == 0.99:
-                        if a != e:
-                            if b == (d or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == b:
-                                            return g
-                                        elif h == b:
-                                            return h
-                                        else:
-                                            return g
-                                return b
-                            elif c == (d or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == c:
-                                            return g
-                                        elif h == c:
-                                            return h
-                                        else:
-                                            return g
-                                return c
-                    if board[2][e] == board[2][f] == 0.99 and board[1][d] == 0.99:
-                        if a != d:
-                            if b == (e or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == b:
-                                            return g
-                                        elif h == b:
-                                            return h
-                                        else:
-                                            return g
-                                return b
-                            elif c == (e or f):
-                                for g, h, i in win_combinations:
-                                    if board[2][g] == board[2][h] == 0.99 and board[0][i] == 0.99:
-                                        if g == c:
-                                            return g
-                                        elif h == c:
-                                            return h
-                                        else:
-                                            return g
-                                return c
+                if board[2][a] == board[2][b] == board[1][c] == 0.99:
+                    if board[2][d] == board[2][e] == board[1][f] == 0.99:
+                        if (c != f) and (a == d or e):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, h, g)
+                                    elif h != a:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, i, g)
+                                    elif i != a:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != a:
+                                        return self.check_move(board, h, i)
+                                    elif h != a:
+                                        return self.check_move(board, i, h)
+                            return a
+                        elif (c != f) and (b == d or e):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, h, g)
+                                    elif h != b:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, i, g)
+                                    elif i != b:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != b:
+                                        return self.check_move(board, h, i)
+                                    elif h != b:
+                                        return self.check_move(board, i, h)
+                            return b
+                    elif board[2][d] == board[2][f] == board[1][e] == 0.99:
+                        if (c != e) and (a == d or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, h, g)
+                                    elif h != a:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, i, g)
+                                    elif i != a:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != a:
+                                        return self.check_move(board, h, i)
+                                    elif h != a:
+                                        return self.check_move(board, i, h)
+                            return a
+                        elif (c != e) and (b == d or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, h, g)
+                                    elif h != b:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, i, g)
+                                    elif i != b:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != b:
+                                        return self.check_move(board, h, i)
+                                    elif h != b:
+                                        return self.check_move(board, i, h)
+                            return b
+                    elif board[2][e] == board[2][f] == board[1][d] == 0.99:
+                        if (c != d) and (a == e or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, h, g)
+                                    elif h != a:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, i, g)
+                                    elif i != a:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != a:
+                                        return self.check_move(board, h, i)
+                                    elif h != a:
+                                        return self.check_move(board, i, h)
+                            return a
+                        elif (c != d) and (b == e or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, h, g)
+                                    elif h != b:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, i, g)
+                                    elif i != b:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != b:
+                                        return self.check_move(board, h, i)
+                                    elif h != b:
+                                        return self.check_move(board, i, h)
+                            return b
+                elif board[2][a] == board[2][c] == board[1][b] == 0.99:
+                    if board[2][d] == board[2][e] == board[1][f] == 0.99:
+                        if (b != f) and (a == d or e):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, h, g)
+                                    elif h != a:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, i, g)
+                                    elif i != a:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != a:
+                                        return self.check_move(board, h, i)
+                                    elif h != a:
+                                        return self.check_move(board, i, h)
+                            return a
+                        elif (b != f) and (c == d or e):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, h, g)
+                                    elif h != c:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, i, g)
+                                    elif i != c:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != c:
+                                        return self.check_move(board, h, i)
+                                    elif h != c:
+                                        return self.check_move(board, i, h)
+                            return c
+                    elif board[2][d] == board[2][f] == board[1][e] == 0.99:
+                        if (b != e) and (a == d or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, h, g)
+                                    elif h != a:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, i, g)
+                                    elif i != a:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != a:
+                                        return self.check_move(board, h, i)
+                                    elif h != a:
+                                        return self.check_move(board, i, h)
+                            return a
+                        elif (b != e) and (c == d or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, h, g)
+                                    elif h != c:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, i, g)
+                                    elif i != c:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != c:
+                                        return self.check_move(board, h, i)
+                                    elif h != c:
+                                        return self.check_move(board, i, h)
+                            return c
+                    elif board[2][e] == board[2][f] == board[1][d] == 0.99:
+                        if (b != d) and (a == e or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, h, g)
+                                    elif h != a:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != a:
+                                        return self.check_move(board, i, g)
+                                    elif i != a:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != a:
+                                        return self.check_move(board, h, i)
+                                    elif h != a:
+                                        return self.check_move(board, i, h)
+                            return a
+                        elif (b != d) and (c == e or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, h, g)
+                                    elif h != c:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, i, g)
+                                    elif i != c:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != c:
+                                        return self.check_move(board, h, i)
+                                    elif h != c:
+                                        return self.check_move(board, i, h)
+                            return c
+                elif board[2][b] == board[2][c] == board[1][a] == 0.99:
+                    if board[2][d] == board[2][e] == board[1][f] == 0.99:
+                        if (a != f) and (b == d or e):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, h, g)
+                                    elif h != b:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, i, g)
+                                    elif i != b:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != b:
+                                        return self.check_move(board, h, i)
+                                    elif h != b:
+                                        return self.check_move(board, i, h)
+                            return b
+                        elif (a != f) and (c == d or e):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, h, g)
+                                    elif h != c:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, i, g)
+                                    elif i != c:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != c:
+                                        return self.check_move(board, h, i)
+                                    elif h != c:
+                                        return self.check_move(board, i, h)
+                            return c
+                    if board[2][d] == board[2][f] == board[1][e] == 0.99:
+                        if (a != e) and (b == d or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, h, g)
+                                    elif h != b:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, i, g)
+                                    elif i != b:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != b:
+                                        return self.check_move(board, h, i)
+                                    elif h != b:
+                                        return self.check_move(board, i, h)
+                            return b
+                        elif (a != e) and (c == d or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, h, g)
+                                    elif h != c:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, i, g)
+                                    elif i != c:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != c:
+                                        return self.check_move(board, h, i)
+                                    elif h != c:
+                                        return self.check_move(board, i, h)
+                            return c
+                    if board[2][e] == board[2][f] == board[1][d] == 0.99:
+                        if (a != d) and (b == e or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, h, g)
+                                    elif h != b:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != b:
+                                        return self.check_move(board, i, g)
+                                    elif i != b:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != b:
+                                        return self.check_move(board, h, i)
+                                    elif h != b:
+                                        return self.check_move(board, i, h)
+                            return b
+                        elif (a != d) and (c == e or f):
+                            for g, h, i in win_combinations:
+                                if board[2][g] == board[2][h] == board[0][i] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, h, g)
+                                    elif h != c:
+                                        return self.check_move(board, g, h)
+                                elif board[2][g] == board[2][i] == board[0][h] == 0.99:
+                                    if g != c:
+                                        return self.check_move(board, i, g)
+                                    elif i != c:
+                                        return self.check_move(board, g, i)
+                                elif board[2][h] == board[2][i] == board[0][g] == 0.99:
+                                    if i != c:
+                                        return self.check_move(board, h, i)
+                                    elif h != c:
+                                        return self.check_move(board, i, h)
+                            return c
 
         # 5. Play Center
         if board[2][4] == 0.99:
@@ -335,6 +470,25 @@ class PerfectAgent:
             return 5
         elif board[2][7] == 0.99:
             return 7
+
+    @staticmethod
+    def check_move(board, x, y):
+        win_combinations = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+
+        board_test = copy.deepcopy(board)
+
+        board_test[1][y] = 0.99
+        board_test[2][y] = 0.01
+
+        for a, b, c in win_combinations:
+            if board_test[1][a] == board_test[1][b] == 0.99 and board_test[2][c] == 0.99:
+                return y
+            elif board_test[1][a] == board_test[1][c] == 0.99 and board_test[2][b] == 0.99:
+                return y
+            elif board_test[1][b] == board_test[1][c] == 0.99 and board_test[2][a] == 0.99:
+                return y
+
+        return x
 
     @staticmethod
     def buffer_experience(a, b, c, d, e):
